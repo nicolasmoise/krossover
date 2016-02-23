@@ -12,36 +12,39 @@
     <div class="create-clip-wrapper">
       <button ng-click="createClip()" ng-if="!creatingClip">Create New Clip</button>
 
-      <form ng-if="creatingClip" ng-submit="addClip()">
-        <label>Name :</label><input type="text" ng-model="newClip.name" required>
-        <label>Start :</label><input type="number" ng-model="newClip.start">
-        <label>End :</label><input type="number" ng-model="newClip.end">
-        <input type="submit" value="Create">
+      <form ng-if="creatingClip" name="clipForm" ng-submit="addClip()">
+          <label>Name :</label><input type="text" ng-model="clip.name" required />
+          <label>Start (in seconds):</label><input type="number" name="start" ng-model="clip.start" min="0" max="{{clip.end}}"/>
+          <label>End (in seconds):</label><input type="number" name="end" ng-model="clip.end"  min="0"/>
+        <input type="submit" value="Create" ng-disabled="clipForm.$invalid">
+        <div class="error" ng-show="clipForm.start.$error.max">Start time must be before end time</div>
       </form>
     </div>
 
     <div class="video-clips-wrapper">
-      <a class="video-clip-link" ng-click="selectFullClip()">Full Video</a>
+      <a class="video-clip-wrapper video-clip-link" ng-click="selectFullClip()" ng-class="{selected: fullClipSelected}">Full Video</a>
 
-      <div class="video-clip-wrapper" ng-repeat="clip in clips track by $index">
+      <div class="video-clip-wrapper" ng-repeat="clip in clips track by $index" ng-class="{selected: clip.selected}" ng-mouseover="clip.showControls = true" ng-mouseleave="clip.showControls = false">
         <div ng-if="!clip.editing">
           <a class="video-clip-link" ng-click="select(clip)">{{clip.name}}</a>
-          <button ng-click="edit(clip)">Edit</button>
-          <button ng-click="remove($index)">Delete</button>
+          <button ng-click="clip.editing = true;" ng-if="clip.showControls">Edit</button>
+          <button ng-click="remove($index)" ng-if="clip.showControls">Delete</button>
         </div>
 
         <form name="editClipForm" ng-if="clip.editing" ng-submit="save(clip)">
-          <label>Name :</label><input type="text" ng-model="clip.name" required>
-          <label>Start :</label><input type="number" ng-model="clip.start">
-          <label>End :</label><input type="number" ng-model="clip.end">
-          <input type="submit" value="Save">
+          <label>Name :</label><input type="text" ng-model="clip.name" required />
+          <label>Start (in seconds):</label><input type="number" ng-model="clip.start" />
+          <label>End (in seconds):</label><input type="number" ng-model="clip.end" />
+          <input type="submit" value="Save" ng-disabled="clipForm.$invalid"  min="{{clip.start}}" />
+          <div class="error" ng-show="clipForm.end.$error.min">Start time must be before end time</div>
         </form>
 
       </div>
     </div>
 
-    <div ng-if="!videoSource">Please select a clip</div>
-    <video ng-if="videoSource" ng-src="{{videoSource}}" controls></video>
+    <div ng-if="!videoSource" class="select-clip video-player-wrapper">Please select a clip</div>
+    <video class="video-player-wrapper" ng-if="videoSource" ng-src="{{videoSource}}" controls></video>
+
 
   </body>
 </html>
