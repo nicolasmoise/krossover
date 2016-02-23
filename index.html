@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <title>Krossover Exercize</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="js/app.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body ng-app="krossoverExercize" ng-controller="videoClip">
+
+
+
+    <div class="create-clip-wrapper">
+      <button ng-click="createClip()" ng-if="!creatingClip">Create New Clip</button>
+
+      <form ng-if="creatingClip" ng-submit="addClip()">
+        <label>Name :</label><input type="text" ng-model="newClip.name" required>
+        <label>Start :</label><input type="number" ng-model="newClip.start">
+        <label>End :</label><input type="number" ng-model="newClip.end">
+        <input type="submit" value="Create">
+      </form>
+    </div>
+
+    <div class="video-clips-wrapper">
+      <a class="video-clip-link" ng-click="selectFullClip()">Full Video</a>
+
+      <div class="video-clip-wrapper" ng-repeat="clip in clips track by $index">
+        <div ng-if="!clip.editing">
+          <a class="video-clip-link" ng-click="select(clip)">{{clip.name}}</a>
+          <button ng-click="edit(clip)">Edit</button>
+          <button ng-click="remove($index)">Delete</button>
+        </div>
+
+        <form name="editClipForm" ng-if="clip.editing" ng-submit="save(clip)">
+          <label>Name :</label><input type="text" ng-model="clip.name" required>
+          <label>Start :</label><input type="number" ng-model="clip.start">
+          <label>End :</label><input type="number" ng-model="clip.end">
+          <input type="submit" value="Save">
+        </form>
+
+      </div>
+    </div>
+
+    <div ng-if="!videoSource">Please select a clip</div>
+    <video ng-if="videoSource" ng-src="{{videoSource}}" controls></video>
+
+  </body>
+</html>

@@ -1,0 +1,11 @@
+.create-clip-wrapper {
+  margin-bottom: 20px;
+}
+
+.video-clips-wrapper {
+  margin-bottom: 20px;
+}
+
+.video-clip-link {
+  cursor: pointer;
+}
