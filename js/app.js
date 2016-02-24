@@ -1,12 +1,12 @@
 angular.module('krossoverExercize', [])
-  .controller('videoClip', ['$sce', '$scope', function($sce, $scope) {
+  .controller('clipPlayerController', ['$sce', '$scope', function($sce, $scope) {
 
     $scope.clips = [];
 
     $scope.createClip = function () {
       $scope.clip = {};
       $scope.creatingClip = true;
-    }
+    };
 
     $scope.selectFullClip = function () {
       $scope.fullClipSelected = true;
@@ -35,6 +35,17 @@ angular.module('krossoverExercize', [])
     };
   }])
 
+  .directive('clipPlayer', [function() {
+    return {
+      restrict: 'E',
+      controller: 'clipPlayerController',
+      templateUrl: 'clipPlayerTemplate',
+      scope: {
+        editable: '='
+      }
+    };
+  }])
+
   .directive('playNextClipIfFinished', ['$timeout', '$document', function ($timeout, $document) {
     return {
       restrict: 'A',
@@ -57,6 +68,10 @@ angular.module('krossoverExercize', [])
               $scope.showNextClipButton = true;
               $scope.$apply();
             }
+          });
+
+          videoplayer.on('$destroy', function () {
+            videoplayer.unbind('timeupdate ended');
           });
 
           $scope.playNextClip = function () {
