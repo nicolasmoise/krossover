@@ -11,6 +11,11 @@ form {
   margin-bottom: 0em;
 }
 
+.error {
+  color: red;
+  padding: 3px;
+}
+
 .create-clip-wrapper {
   margin-bottom: 20px;
 }
@@ -30,6 +35,7 @@ form {
 
 .video-clip-link {
   cursor: pointer;
+  font-size: 18px;
 }
 
 input {
@@ -50,6 +56,6 @@ input[type=number] {
   display: block;
 }
 
-.select-clip {
+.italic {
   font-style: italic;
 }

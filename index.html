@@ -24,7 +24,7 @@
     <div class="video-clips-wrapper">
       <a class="video-clip-wrapper video-clip-link" ng-click="selectFullClip()" ng-class="{selected: fullClipSelected}">Full Video</a>
 
-      <div class="video-clip-wrapper" ng-repeat="clip in clips track by $index" ng-class="{selected: clip.selected}" ng-mouseover="clip.showControls = true" ng-mouseleave="clip.showControls = false">
+      <div class="video-clip-wrapper" ng-repeat="clip in clips track by $index" ng-class="{selected: currentClip === clip}" ng-mouseover="clip.showControls = true" ng-mouseleave="clip.showControls = false">
         <div ng-if="!clip.editing">
           <a class="video-clip-link" ng-click="select(clip)">{{clip.name}}</a>
           <button ng-click="clip.editing = true;" ng-if="clip.showControls">Edit</button>
@@ -42,8 +42,15 @@
       </div>
     </div>
 
-    <div ng-if="!videoSource" class="select-clip video-player-wrapper">Please select a clip</div>
-    <video class="video-player-wrapper" ng-if="videoSource" ng-src="{{videoSource}}" controls></video>
+
+    <div class="video-player-wrapper" play-next-clip-if-finished>
+      <div ng-show="!videoSource && !showNextClipButton && !clipLoading" class="italic">Please select a clip</div>
+      <video id="video-player" ng-show="videoSource" ng-src="{{videoSource}}" controls autoplay></video>
+      <button ng-show="showNextClipButton" ng-click="showNextClipButton=false; playNextClip()">Go to Next Clip</button>
+      <div ng-show="clipLoading" class="italic">Next Clip is loading</div>
+    </div>
+
+
 
 
   </body>
