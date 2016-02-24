@@ -44,11 +44,14 @@
       </div>
 
 
-      <div class="video-player-wrapper" play-next-clip-if-finished>
-        <div ng-show="!videoSource && !showNextClipButton && !clipLoading" class="italic">Please select a clip</div>
-        <video id="video-player" ng-show="videoSource" ng-src="{{videoSource}}" controls autoplay></video>
-        <button ng-show="showNextClipButton" ng-click="showNextClipButton=false; playNextClip()">Go to Next Clip</button>
-        <div ng-show="clipLoading" class="italic">Next Clip is loading</div>
+      <div class="video-player-wrapper">
+        <div ng-show="videoPlayerView === 'noClipSelected'" class="italic">Please select a clip</div>
+        <video ng-show="videoPlayerView === 'clipPlaying'" id="video-player" ng-src="{{videoSource}}" controls autoplay></video>
+        <div ng-show="videoPlayerView === 'clipFinished'">
+          <span>Your clip has finished</span>
+          <button ng-click="showNextClipButton=false; playNextClip()">Go to Next Clip</button>
+        </div>
+        <div ng-show="videoPlayerView === 'clipLoading'" class="italic">Clip is loading</div>
       </div>
     </script>
 
