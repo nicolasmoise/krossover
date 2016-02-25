@@ -1,5 +1,5 @@
 body {
-  background-color: #e8edf3;
+  background-color: #fff;
   color: #22264b;
 }
 
@@ -11,6 +11,10 @@ form {
   margin-bottom: 0em;
 }
 
+form[name="clipForm"] input {
+  margin-right: 15px;
+}
+
 .error {
   color: red;
   padding: 3px;
@@ -20,34 +24,53 @@ form {
   margin-bottom: 20px;
 }
 
-.video-clips-wrapper {
+.clip-list-wrapper {
+  position: fixed;
   margin-bottom: 20px;
+  width: 280px;
+  box-shadow: 2px 2px 3px 0px rgba(0,0,0,1);
 }
 
-.video-clip-wrapper {
+.clip-wrapper {
   display: table;
-  padding: 3px;
+  padding: 3px 15px;
+  width: 250px;
+}
+
+.clip-wrapper:nth-child(odd){
+  background-color: #f2efe8;
+}
+
+.clip-wrapper:nth-child(even){
+  background-color: #c2d4d8;
 }
 
 .selected {
-  background-color: #e6cf8b;
+  background-color:  #b0aac2 !important;
 }
 
-.video-clip-link {
+.clip-link {
   cursor: pointer;
   font-size: 18px;
+  font-weight: bold;
 }
 
-input {
-  margin: 0 20px 0 10px;
+.clip-controls {
+  float: right;
+  margin-right: 10px
 }
 
 input[type=number] {
   width: 50px;
 }
 
-.video-clip-link {
-  text-decoration: underline;
+.form-group {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  float: right;
 }
 
 .video-player-wrapper {
@@ -56,6 +79,31 @@ input[type=number] {
   display: block;
 }
 
-.italic {
+.video-message {
   font-style: italic;
+  text-align: left;
+  margin: 100px auto 20px auto;
+  width: 140px;
+}
+
+.loading:after {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  -webkit-animation: ellipsis steps(4,end) 900ms infinite;
+  animation: ellipsis steps(4,end) 900ms infinite;
+  content: "\2026"; /* ascii code for the ellipsis character */
+  width: 0px;
+}
+
+@keyframes ellipsis {
+  to {
+    width: 20px;
+  }
+}
+
+@-webkit-keyframes ellipsis {
+  to {
+    width: 20px;
+  }
 }

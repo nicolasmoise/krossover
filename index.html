@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <title>Krossover Exercize</title>
@@ -14,28 +15,34 @@
         <button ng-click="createClip()" ng-if="!creatingClip">Create New Clip</button>
 
         <form ng-if="creatingClip" name="clipForm" ng-submit="addClip()">
-            <label>Name :</label><input type="text" ng-model="clip.name" required />
-            <label>Start (in seconds):</label><input type="number" name="start" ng-model="clip.start" min="0" max="{{clip.end}}"/>
-            <label>End (in seconds):</label><input type="number" name="end" ng-model="clip.end"  min="0"/>
-          <input type="submit" value="Create" ng-disabled="clipForm.$invalid">
-          <div class="error" ng-show="clipForm.start.$error.max">Start time must be before end time</div>
+            <label>Name *: </label><input type="text" ng-model="clip.name" name="name" required />
+            <label>Start (in seconds): </label><input type="number" name="start" ng-model="clip.start" min="0" max="{{clip.end}}"/>
+            <label>End (in seconds): </label><input type="number" name="end" ng-model="clip.end"  min="0"/>
+            <div class="error" ng-show="clipForm.start.$error.max">Start time must be before end time</div>
+            <input type="submit" value="Create" ng-disabled="clipForm.start.$invalid || clipForm.end.$invalid">
         </form>
       </div>
 
-      <div class="video-clips-wrapper">
-        <a class="video-clip-wrapper video-clip-link" ng-click="selectFullClip()" ng-class="{selected: fullClipSelected}">Full Video</a>
+      <div class="clip-list-wrapper">
+        <a class="clip-wrapper clip-link" ng-click="selectFullClip()" ng-class="{selected: fullClipSelected}">Full Video</a>
 
-        <div class="video-clip-wrapper" ng-repeat="clip in clips track by $index" ng-class="{selected: currentClip === clip}" ng-mouseover="clip.showControls = true" ng-mouseleave="clip.showControls = false">
+        <div class="clip-wrapper" ng-repeat="clip in clips track by $index" ng-class="{selected: currentClip === clip}" ng-mouseover="clip.showControls = true" ng-mouseleave="clip.showControls = false">
           <div ng-if="!clip.editing">
-            <a class="video-clip-link" ng-click="select(clip)">{{clip.name}}</a>
-            <button ng-click="clip.editing = true;" ng-if="editable && clip.showControls">Edit</button>
-            <button ng-click="remove($index)" ng-if="editable && clip.showControls">Delete</button>
+            <a class="clip-link" ng-click="select(clip)">{{clip.name}}</a>
+            <button class="clip-controls" ng-click="clip.editing = true;" ng-if="editable && clip.showControls">Edit</button>
+            <button class="clip-controls" ng-click="remove($index)" ng-if="editable && clip.showControls">Delete</button>
           </div>
 
           <form name="editClipForm" ng-if="clip.editing" ng-submit="save(clip)">
-            <label>Name :</label><input type="text" ng-model="clip.name" required />
-            <label>Start (in seconds):</label><input type="number" ng-model="clip.start" />
-            <label>End (in seconds):</label><input type="number" ng-model="clip.end" />
+            <div class="form-group">
+              <label>Name :</label><input type="text" ng-model="clip.name" required />
+            </div>
+            <div class="form-group">
+              <label>Start (in seconds):</label><input type="number" ng-model="clip.start" />
+            </div>
+            <div class="form-group">
+              <label>End (in seconds):</label><input type="number" ng-model="clip.end" />
+            </div>
             <input type="submit" value="Save" ng-disabled="clipForm.$invalid"  min="{{clip.start}}" />
             <div class="error" ng-show="clipForm.end.$error.min">Start time must be before end time</div>
           </form>
@@ -45,13 +52,13 @@
 
 
       <div class="video-player-wrapper">
-        <div ng-show="videoPlayerView === 'noClipSelected'" class="italic">Please select a clip</div>
+        <div ng-show="videoPlayerView === 'noClipSelected'" class="video-message">Please select a clip</div>
         <video ng-show="videoPlayerView === 'clipPlaying'" id="video-player" ng-src="{{videoSource}}" controls autoplay></video>
         <div ng-show="videoPlayerView === 'clipFinished'">
-          <span>Your clip has finished</span>
-          <button ng-click="showNextClipButton=false; playNextClip()">Go to Next Clip</button>
+          <div class="video-message">Your clip has finished </div>
+          <button ng-click="playNextClip()">Go to Next Clip</button>
         </div>
-        <div ng-show="videoPlayerView === 'clipLoading'" class="italic">Clip is loading</div>
+        <div ng-show="videoPlayerView === 'clipLoading'" class="video-message loading">Clip is loading</div>
       </div>
     </script>
 
